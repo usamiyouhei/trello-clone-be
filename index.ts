@@ -7,6 +7,10 @@ app.get("/", (req, res) => {
   res.send("Hello Web Server");
 });
 
+app.get("/test", (req, res) => {
+  res.send("Hello Test");
+});
+
 app.listen(PORT, () => {
   console.log("サーバーが起動しました");
 });
