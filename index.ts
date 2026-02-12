@@ -10,6 +10,11 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => {
   res.send("Hello Test");
 });
+app.get("/users/:id", (req, res) => {
+  res.send(
+    `User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}.Sex is ${req.query.sex}`,
+  );
+});
 
 app.listen(PORT, () => {
   console.log("サーバーが起動しました");
