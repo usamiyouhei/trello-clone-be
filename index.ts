@@ -1,6 +1,7 @@
 import express from "express";
 
 const app = express();
+app.use(express.json());
 const PORT = 8890;
 
 app.get("/", (req, res) => {
@@ -14,6 +15,21 @@ app.get("/users/:id", (req, res) => {
   res.send(
     `User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}.Sex is ${req.query.sex}`,
   );
+});
+
+// app.post("/", (req, res) => {
+//   res.send("This is post request");
+// });
+app.post("/", (req, res) => {
+  res.send(req.body);
+});
+
+app.put("/users/:id", (req, res) => {
+  res.send(req.body);
+});
+
+app.delete("/users/:id", (req, res) => {
+  res.send(req.params.id);
 });
 
 app.listen(PORT, () => {
