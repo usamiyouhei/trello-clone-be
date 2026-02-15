@@ -2,10 +2,11 @@ import express from "express";
 
 const app = express();
 app.use(express.json());
+app.use(express.static("public"));
 const PORT = 8890;
 
 app.get("/", (req, res) => {
-  res.send("Hello Web Server");
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/test", (req, res) => {
