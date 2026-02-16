@@ -1,4 +1,5 @@
 import express from "express";
+import { AppDataSource } from "./datasource";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +36,10 @@ app.delete("/users/:id", (req, res) => {
 
 app.listen(PORT, () => {
   console.log("サーバーが起動しました");
+});
+
+AppDataSource.initialize().then(() => {
+  console.log("データベースに接続しました");
 });
 
 // import * as http from "http";
