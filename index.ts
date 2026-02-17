@@ -1,5 +1,6 @@
 import express from "express";
 import { AppDataSource } from "./datasource";
+import { User } from "./user.entity";
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,18 @@ app.put("/users/:id", (req, res) => {
 
 app.delete("/users/:id", (req, res) => {
   res.send(req.params.id);
+});
+
+app.post("/users", async (req, res) => {
+  const { name, email } = req.body;
+  const user = new User();
+  user.name = name;
+  user.email = email;
+
+  const UserRepository = AppDataSource.getRepository(User);
+  const newUser = await UserRepository.save(user);
+
+  res.json(newUser);
 });
 
 app.listen(PORT, () => {
