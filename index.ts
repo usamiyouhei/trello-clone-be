@@ -4,7 +4,12 @@ import { User } from "./user.entity";
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+
+app.use((req, res, next) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
+  next();
+});
+
 const PORT = 8890;
 
 app.get("/", (req, res) => {
@@ -14,11 +19,11 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => {
   res.send("Hello Test");
 });
-app.get("/users/:id", (req, res) => {
-  res.send(
-    `User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}.Sex is ${req.query.sex}`,
-  );
-});
+// app.get("/users/:id", (req, res) => {
+//   res.send(
+//     `User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}.Sex is ${req.query.sex}`,
+//   );
+// });
 
 // app.post("/", (req, res) => {
 //   res.send("This is post request");
@@ -47,6 +52,19 @@ app.post("/users", async (req, res) => {
   res.json(newUser);
 });
 
+app.get("/users", async (req, res) => {
+  const userRepository = AppDataSource.getRepository(User);
+  const users = await userRepository.find();
+  res.json(users);
+});
+
+app.get("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const userRepository = AppDataSource.getRepository(User);
+  const user = await userRepository.findOneBy({ id: parseInt(id) });
+  res.json(user);
+});
+
 app.listen(PORT, () => {
   console.log("サーバーが起動しました");
 });
@@ -54,7 +72,7 @@ app.listen(PORT, () => {
 AppDataSource.initialize().then(() => {
   console.log("データベースに接続しました");
 });
-
+app.use(express.static("public"));
 // import * as http from "http";
 
 // const server = http.createServer((req, res) => {
