@@ -65,6 +65,18 @@ app.get("/users/:id", async (req, res) => {
   res.json(user);
 });
 
+app.put("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, email } = req.body;
+  const userRepository = AppDataSource.getRepository(User);
+
+  const existingUser = await userRepository.findOneBy({ id: parseInt(id) });
+  existingUser!.name = name;
+  existingUser!.email = email;
+
+  const updatedUser = await userRepository.save(existingUser!);
+});
+
 app.listen(PORT, () => {
   console.log("サーバーが起動しました");
 });
