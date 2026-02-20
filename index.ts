@@ -10,7 +10,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = 8890;
+const PORT = 8899;
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
@@ -32,9 +32,9 @@ app.post("/", (req, res) => {
   res.send(req.body);
 });
 
-app.put("/users/:id", (req, res) => {
-  res.send(req.body);
-});
+// app.put("/users/:id", (req, res) => {
+//   res.send(req.body);
+// });
 
 app.delete("/users/:id", (req, res) => {
   res.send(req.params.id);
@@ -75,6 +75,7 @@ app.put("/users/:id", async (req, res) => {
   existingUser!.email = email;
 
   const updatedUser = await userRepository.save(existingUser!);
+  res.json(updatedUser);
 });
 
 app.listen(PORT, () => {
