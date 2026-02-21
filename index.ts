@@ -36,9 +36,9 @@ app.post("/", (req, res) => {
 //   res.send(req.body);
 // });
 
-app.delete("/users/:id", (req, res) => {
-  res.send(req.params.id);
-});
+// app.delete("/users/:id", (req, res) => {
+//   res.send(req.params.id);
+// });
 
 app.post("/users", async (req, res) => {
   const { name, email } = req.body;
@@ -76,6 +76,13 @@ app.put("/users/:id", async (req, res) => {
 
   const updatedUser = await userRepository.save(existingUser!);
   res.json(updatedUser);
+});
+
+app.delete("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const userRepository = AppDataSource.getRepository(User);
+  await userRepository.delete(id);
+  res.json({ success: true });
 });
 
 app.listen(PORT, () => {
